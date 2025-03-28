@@ -13,9 +13,7 @@ pipeline {
                 '''
             }
         }
-    }
-}
-
+        
         stage('Build') {
             steps {
                 echo "Building..."
@@ -25,12 +23,14 @@ pipeline {
                 '''
             }
         }
+
         stage('Test') {
             steps {
                 echo "Running Tests..."
                 sh 'python3 test_script.py'
             }
         }
+
         stage('Deliver') {
             steps {
                 echo "Delivery complete!"
@@ -38,5 +38,6 @@ pipeline {
         }
     }
 }
+
 
 
