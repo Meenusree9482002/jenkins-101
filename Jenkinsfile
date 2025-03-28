@@ -1,5 +1,5 @@
 pipeline {
-    agent any  // This will use the built-in Jenkins node
+    agent any
     triggers {
         pollSCM('* * * * *')
     }
@@ -9,7 +9,7 @@ pipeline {
                 echo "Building.."
                 sh '''
                 cd myapp
-                pip install -r requirements.txt
+                python3 -m pip install -r requirements.txt
                 '''
             }
         }
@@ -33,3 +33,4 @@ pipeline {
         }
     }
 }
+
