@@ -3,10 +3,19 @@ pipeline {
     stages {
         stage('Setup Environment') {
             steps {
-                echo "Checking Python version..."
-                sh 'python3 --version || echo "Python not installed"'
+                sh '''
+                if ! command -v python3 &> /dev/null
+                then
+                    echo "Python not installed. Installing now..."
+                    apt update && apt install -y python3 python3-pip
+                fi
+                python3 --version
+                '''
             }
         }
+    }
+}
+
         stage('Build') {
             steps {
                 echo "Building..."
