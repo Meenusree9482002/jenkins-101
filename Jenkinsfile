@@ -57,7 +57,9 @@ pipeline {
 
     post {
         always {
-            sh 'deactivate || true'  # Ensure the virtual environment is deactivated
+            sh '''
+            deactivate || true  // Ensure the virtual environment is deactivated
+            '''
         }
     }
 }
