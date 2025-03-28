@@ -1,48 +1,33 @@
 pipeline {
     agent any
-    triggers {
-        pollSCM '* * * * *'
-    }
     stages {
         stage('Setup Environment') {
             steps {
-                echo "Installing Python..."
-                sh '''
-                whoami
-                sudo apt update || true
-                sudo apt install -y python3 python3-pip || true
-                python3 --version || true
-                pip3 --version || true
-                '''
+                echo "Checking Python version..."
+                sh 'python3 --version || echo "Python not installed"'
             }
         }
         stage('Build') {
             steps {
-                echo "Building.."
+                echo "Building..."
                 sh '''
-                cd myapp
+                python3 -m pip install --upgrade pip
                 python3 -m pip install -r requirements.txt
                 '''
             }
         }
         stage('Test') {
             steps {
-                echo "Testing.."
-                sh '''
-                cd myapp
-                python3 hello.py
-                python3 hello.py --name=Brad
-                '''
+                echo "Running Tests..."
+                sh 'python3 test_script.py'
             }
         }
         stage('Deliver') {
             steps {
-                echo 'Deliver....'
-                sh '''
-                echo "doing delivery stuff.."
-                '''
+                echo "Delivery complete!"
             }
         }
     }
 }
+
 
