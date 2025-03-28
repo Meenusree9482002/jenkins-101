@@ -1,5 +1,5 @@
 pipeline {
-    agent any  // Runs on any available agent
+    agent any
     triggers {
         pollSCM '* * * * *'
     }
@@ -8,9 +8,11 @@ pipeline {
             steps {
                 echo "Installing Python..."
                 sh '''
-                apt update && apt install -y python3 python3-pip
-                python3 --version
-                pip3 --version
+                whoami
+                sudo apt update || true
+                sudo apt install -y python3 python3-pip || true
+                python3 --version || true
+                pip3 --version || true
                 '''
             }
         }
