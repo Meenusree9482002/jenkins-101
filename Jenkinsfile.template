@@ -3,6 +3,9 @@ pipeline {
         node {
             label 'jenkins-agent-goes-here'
             }
+        }
+    triggers  {
+        pollSCM '* * * * *'
       }
     stages {
         stage('Build') {
