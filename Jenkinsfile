@@ -1,11 +1,7 @@
 pipeline {
-    agent { 
-        node {
-            label 'docker-agent-python'
-            }
-      }
+    agent any  // This will use the built-in Jenkins node
     triggers {
-        pollSCM '* * * * *'
+        pollSCM('* * * * *')
     }
     stages {
         stage('Build') {
