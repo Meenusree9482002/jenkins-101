@@ -1,9 +1,23 @@
 pipeline {
-    agent any
+    agent { 
+        node {
+            label 'docker-agent-python'
+        }
+    }
     triggers {
-        pollSCM('* * * * *')
+        pollSCM '* * * * *'
     }
     stages {
+        stage('Setup Environment') {
+            steps {
+                echo "Installing Python..."
+                sh '''
+                apt update && apt install -y python3 python3-pip
+                python3 --version
+                pip3 --version
+                '''
+            }
+        }
         stage('Build') {
             steps {
                 echo "Building.."
