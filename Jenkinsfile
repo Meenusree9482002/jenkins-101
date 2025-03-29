@@ -1,71 +1,51 @@
 pipeline {
     agent any
 
-    stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/Meenusree9482002/jenkins-101'
-            }
-        }
+    environment {
+        PROJECT_NAME = 'MyProject'
+    }
 
-        stage('Setup Environment') {
+    stages {
+        stage('Initialize') {
             steps {
-                sh '''
-                    echo "Setting up Python environment..."
-                    
-                    # Install Python if not available
-                    if ! command -v python3 &> /dev/null; then
-                        echo "Python not found. Installing..."
-                        apt update
-                        apt install -y python3 python3-pip python3-venv
-                    fi
-                    
-                    # Create and activate virtual environment
-                    python3 -m venv venv
-                    . venv/bin/activate
-                '''
+                echo "Initializing Pipeline for ${PROJECT_NAME}..."
             }
         }
 
         stage('Build') {
             steps {
-                sh '''
-                    . venv/bin/activate
-                    echo "Building the project..."
-                    # Add your build commands here
-                '''
+                echo "Building the project..."
+                sh 'echo "Compiling source code..."'
+                // Add actual build commands here
             }
         }
 
         stage('Test') {
             steps {
-                sh '''
-                    . venv/bin/activate
-                    echo "Running tests..."
-                    # Add your test commands here
-                '''
+                echo "Running tests..."
+                sh 'echo "Executing unit tests..."'
+                // Run your test script here, e.g., sh 'pytest tests/'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh '''
-                    . venv/bin/activate
-                    echo "Deploying the application..."
-                    # Add your deployment commands here
-                '''
+                echo "Deploying the application..."
+                sh 'echo "Deploying to production..."'
+                // Add deployment steps here
             }
         }
     }
 
     post {
+        success {
+            echo "Pipeline execution completed successfully!"
+        }
+        failure {
+            echo "Pipeline failed. Check the logs for details."
+        }
         always {
-            sh '''
-                echo "Cleaning up..."
-                if [ -d "venv" ]; then
-                    . venv/bin/activate && deactivate || true
-                fi
-            '''
+            echo "Pipeline execution finished. Cleaning up..."
         }
     }
 }
