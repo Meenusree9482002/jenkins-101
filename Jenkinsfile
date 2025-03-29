@@ -1,51 +1,43 @@
 pipeline {
     agent any
 
-    environment {
-        PROJECT_NAME = 'MyProject'
-    }
-
     stages {
         stage('Initialize') {
             steps {
-                echo "Initializing Pipeline for ${PROJECT_NAME}..."
+                echo 'Initializing Pipeline for MyProject...'
             }
         }
-
+        
         stage('Build') {
             steps {
-                echo "Building the project..."
-                sh 'echo "Compiling source code..."'
-                // Add actual build commands here
+                echo 'Building the project...'
+                sh 'echo Compiling source code...'
+                sh 'python3 helloworld.py' // Execute the script
             }
         }
 
         stage('Test') {
             steps {
-                echo "Running tests..."
-                sh 'echo "Executing unit tests..."'
-                // Run your test script here, e.g., sh 'pytest tests/'
+                echo 'Running tests...'
+                sh 'echo Executing unit tests...'
             }
         }
 
         stage('Deploy') {
             steps {
-                echo "Deploying the application..."
-                sh 'echo "Deploying to production..."'
-                // Add deployment steps here
+                echo 'Deploying the application...'
+                sh 'echo Deploying to production...'
             }
         }
     }
 
     post {
-        success {
-            echo "Pipeline execution completed successfully!"
-        }
-        failure {
-            echo "Pipeline failed. Check the logs for details."
-        }
         always {
-            echo "Pipeline execution finished. Cleaning up..."
+            echo 'Pipeline execution finished. Cleaning up...'
+        }
+        success {
+            echo 'Pipeline execution completed successfully!'
         }
     }
 }
+
