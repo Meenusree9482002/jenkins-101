@@ -8,20 +8,51 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Setup Environment') {
             steps {
                 sh '''
-                    echo "Building Docker image..."
-                    docker build -t hello-world-app .
+                    echo "Setting up Python environment..."
+                    
+                    # Install Python if not available
+                    if ! command -v python3 &> /dev/null; then
+                        echo "Python not found. Installing..."
+                        apt update
+                        apt install -y python3 python3-pip python3-venv
+                    fi
+                    
+                    # Create and activate virtual environment
+                    python3 -m venv venv
+                    . venv/bin/activate
                 '''
             }
         }
 
-        stage('Run Docker Container') {
+        stage('Build') {
             steps {
                 sh '''
-                    echo "Running Docker container..."
-                    docker run --rm hello-world-app
+                    . venv/bin/activate
+                    echo "Building the project..."
+                    # Add your build commands here
+                '''
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh '''
+                    . venv/bin/activate
+                    echo "Running tests..."
+                    # Add your test commands here
+                '''
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                    . venv/bin/activate
+                    echo "Deploying the application..."
+                    # Add your deployment commands here
                 '''
             }
         }
@@ -29,7 +60,12 @@ pipeline {
 
     post {
         always {
-            sh 'echo "Pipeline execution completed."'
+            sh '''
+                echo "Cleaning up..."
+                if [ -d "venv" ]; then
+                    . venv/bin/activate && deactivate || true
+                fi
+            '''
         }
     }
 }
